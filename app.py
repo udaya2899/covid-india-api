@@ -67,7 +67,8 @@ def html_to_json(content, time, indent=None):
 @app.route('/', methods=['GET'])
 def home():
     return '''<h1>COVID 19 India Data</h1>
-    <h3>Source: <a href="https://mohfw.gov.in">Ministry of Health and Family Welfare, India</h3>'''
+    <h3>Source: <a href="https://mohfw.gov.in">Ministry of Health and Family Welfare, India</a></h3>
+    <h3><a href="https://covid-india-api.herokuapp.com/api/covid-india">Click here</a> to get data as JSON<h3>'''
 
 
 @app.route('/api/covid-india', methods=['GET'])
