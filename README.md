@@ -96,3 +96,5 @@ Pull requests are welcomed to make changes. To make drastic changes, open an iss
 ## Contact  :mailbox:
 Mail me at udayaprakash2899@gmail.com for further queries 
 
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
