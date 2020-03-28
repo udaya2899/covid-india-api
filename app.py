@@ -68,10 +68,10 @@ def html_to_json(content, time, indent=None):
 def home():
     return '''<h1>COVID 19 India Data</h1>
     <h3>Source: <a href="https://mohfw.gov.in">Ministry of Health and Family Welfare, India</a></h3>
-    <h3><a href="https://covid-india-api.herokuapp.com/api/covid-india">Click here</a> to get data as JSON<h3>'''
+    <h3><a href="https://covid-india-api.herokuapp.com/api">Click here</a> to get data as JSON<h3>'''
 
 
-@app.route('/api/covid-india', methods=['GET'])
+@app.route('/api', methods=['GET'])
 def get_data():
     table, time = get_table_from_web()
     last_updated = dparser.parse(time, fuzzy=True)
