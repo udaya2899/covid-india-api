@@ -14,6 +14,7 @@ import re
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
+# Removed Foreign National Column
 headers = {
     0: "id",
     1: "place",
@@ -21,7 +22,7 @@ headers = {
     3: "cured",
     4: "deaths"
 }
-
+# Added Date Time matching REGEX to give better input to Fuzze Dateutil Parser
 date_time_pattern = r"\d{2}.\d{2}.2020(.*)"
 
 
