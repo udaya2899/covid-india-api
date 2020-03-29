@@ -9,19 +9,20 @@ from bs4 import BeautifulSoup
 import json
 import dateutil.parser as dparser
 from flask import Flask
-
+import re
 
 app = Flask(__name__)
-#app.config["DEBUG"] = True
+app.config["DEBUG"] = True
 
 headers = {
     0: "id",
     1: "place",
-    2: "confirmed_indian",
-    3: "confirmed_foreign",
-    4: "cured",
-    5: "deaths"
+    2: "confirmed",
+    3: "cured",
+    4: "deaths"
 }
+
+date_time_pattern = r"\d{2}.\d{2}.2020(.*)"
 
 
 def get_table_from_web():
@@ -30,8 +31,10 @@ def get_table_from_web():
     soup = BeautifulSoup(page.content, 'html.parser')
     div = soup.find('div', id='cases')
     time = div.find('strong').text
+    extracted_time = re.search(date_time_pattern, time)
+    extracted_time = extracted_time.group(0)
     table = div.find('table', class_='table')
-    return table, time
+    return table, extracted_time
 
 
 def html_to_json(content, time, indent=None):
@@ -55,8 +58,8 @@ def html_to_json(content, time, indent=None):
         total_items = {}
         for index in headers:
             if index != 0 and index != 1:
-                total_items[headers[index]] = cells[index -
-                                                    1].text.replace('\n', '').replace('#', '')
+                total_items[headers[index]] = cells[index-1].text.replace(
+                    '\n', '').replace('#', '')
     body["total_data"] = total_items
     body["last_updated"] = str(time)
     response = {}
@@ -73,8 +76,8 @@ def home():
 
 @app.route('/api', methods=['GET'])
 def get_data():
-    table, time = get_table_from_web()
-    last_updated = dparser.parse(time, fuzzy=True)
+    table, extracted_time = get_table_from_web()
+    last_updated = dparser.parse(extracted_time, fuzzy=True)
     state_wise_data = html_to_json(table, last_updated)
     return state_wise_data
 
