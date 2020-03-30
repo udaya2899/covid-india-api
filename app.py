@@ -53,7 +53,7 @@ def html_to_json(content, time, indent=None):
             body = {}
             body["state_data"] = data
 
-    for row in rows[-1:]:
+    for row in rows[-2:-1]:
         cells = row.find_all("td")
         total_items = {}
         for index in headers:
