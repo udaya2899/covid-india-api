@@ -10,8 +10,14 @@ import json
 import dateutil.parser as dparser
 from flask import Flask
 import re
+import thread
+import time
+from time import sleep
+from datetime import datetime
 
 app = Flask(__name__)
+
+
 
 # Removed Foreign National Column
 headers = {
@@ -29,10 +35,13 @@ def get_table_from_web():
     url = "https://mohfw.gov.in"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-    div = soup.find('div', id='cases')
-    time = div.find('strong').text
-    extracted_time = re.search(date_time_pattern, time)
-    extracted_time = extracted_time.group(0)
+    div = soup.find('div',class_='data-table')
+    # time = div.find('strong').text
+    extracted_time = "2020-03-28 17:45:00"
+    # print("time",time)
+    # extracted_time = re.search(date_time_pattern, time)
+    # extracted_time = extracted_time.group(0)
+
     table = div.find('table', class_='table')
     return table, extracted_time
 
@@ -52,20 +61,30 @@ def html_to_json(content, time, indent=None):
             data.append(items)
             body = {}
             body["state_data"] = data
+    
+    total = rows[len(rows)-1].find_all("strong")
+    total_items = {}
 
-    for row in rows[-2:-1]:
-        cells = row.find_all("td")
-        total_items = {}
-        for index in headers:
-            if index != 0 and index != 1:
-                total_items[headers[index]] = cells[index-1].text.replace(
-                    '\n', '').replace('#', '')
+    for index in headers:
+        if index != 0 and index != 1:
+            total_items[headers[index]] = total[index-1].text
+
     body["total_data"] = total_items
     body["last_updated"] = str(time)
     response = {}
     response["data"] = body
     return json.dumps(response, indent=indent)
 
+def data_extract():
+    global last_extracted_content
+    global last_extracted_time
+    while(True):
+        print("updated")
+        table, extracted_time = get_table_from_web()
+        last_updated = dparser.parse(extracted_time, fuzzy=True)
+        state_wise_data = html_to_json(table, datetime.now())
+        last_extracted_content = state_wise_data
+        time.sleep(3600)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -76,11 +95,8 @@ def home():
 
 @app.route('/api', methods=['GET'])
 def get_data():
-    table, extracted_time = get_table_from_web()
-    last_updated = dparser.parse(extracted_time, fuzzy=True)
-    state_wise_data = html_to_json(table, last_updated)
-    return state_wise_data
-
+    return last_extracted_content
 
 if __name__ == "__main__":
-    app.run()
+    thread.start_new_thread( data_extract, ())
+    app.run(debug=True)
