@@ -81,7 +81,6 @@ def data_extract():
         table, extracted_time = get_table_from_web()
         last_updated = dparser.parse(extracted_time, fuzzy=True)
         state_wise_data = html_to_json(table, datetime.now())
-        global last_extracted_content
         last_extracted_content = state_wise_data
         time.sleep(3600)
 
