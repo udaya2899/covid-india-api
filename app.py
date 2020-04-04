@@ -82,7 +82,7 @@ def data_extract():
         state_wise_data = html_to_json(table, datetime.now())
         global last_extracted_content
         last_extracted_content = state_wise_data
-        # print("content:",last_extracted_content)
+        print("content:",last_extracted_content)
         time.sleep(3600)
 
 
