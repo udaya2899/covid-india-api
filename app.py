@@ -16,8 +16,7 @@ from time import sleep
 from datetime import datetime
 
 app = Flask(__name__)
-last_extracted_content = None
-last_extracted_time = None
+
 # Removed Foreign National Column
 headers = {
     0: "id",
