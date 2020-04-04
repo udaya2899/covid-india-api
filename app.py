@@ -10,7 +10,7 @@ import json
 import dateutil.parser as dparser
 from flask import Flask
 import re
-import _thread
+import thread
 import time
 from time import sleep
 from datetime import datetime
@@ -27,7 +27,6 @@ headers = {
 }
 # Added Date Time matching REGEX to give better input to Fuzze Dateutil Parser
 date_time_pattern = r"\d{2}.\d{2}.2020(.*)"
-global last_extracted_content
 last_extracted_content = "welcome"
 
 def get_table_from_web():
@@ -77,6 +76,7 @@ def html_to_json(content, time, indent=None):
 
 def data_extract():
     global last_extracted_time
+    global last_extracted_content
     while(True):
         table, extracted_time = get_table_from_web()
         last_updated = dparser.parse(extracted_time, fuzzy=True)
@@ -98,5 +98,5 @@ def get_data():
 
 
 if __name__ == "__main__":
-    _thread.start_new_thread(data_extract, ())
+    thread.start_new_thread(data_extract, ())
     app.run()
