@@ -10,7 +10,7 @@ import json
 import dateutil.parser as dparser
 from flask import Flask
 import re
-import thread
+import _thread
 import time
 from time import sleep
 from datetime import datetime
@@ -36,7 +36,7 @@ def get_table_from_web():
     url = "https://mohfw.gov.in"
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-    div = soup.find('div',class_='data-table')
+    div = soup.find('div', class_='data-table')
     # time = div.find('strong').text
     extracted_time = "2020-03-28 17:45:00"
     # print("time",time)
@@ -75,6 +75,7 @@ def html_to_json(content, time, indent=None):
     response["data"] = body
     return json.dumps(response, indent=indent)
 
+
 def data_extract():
     global last_extracted_time
     global last_extracted_content
@@ -85,6 +86,7 @@ def data_extract():
         state_wise_data = html_to_json(table, datetime.now())
         last_extracted_content = state_wise_data
         time.sleep(3600)
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -97,6 +99,7 @@ def home():
 def get_data():
     return last_extracted_content
 
+
 if __name__ == "__main__":
-    thread.start_new_thread( data_extract, ())
+    _thread.start_new_thread(data_extract, ())
     app.run(debug=True)
