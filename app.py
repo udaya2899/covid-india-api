@@ -95,7 +95,7 @@ def home():
 
 @app.route('/api', methods=['GET'])
 def get_data():
-    # print("serial data:",last_extracted_content)
+    print("serial data:",last_extracted_content)
     return last_extracted_content
 
 
@@ -104,4 +104,4 @@ if __name__ == "__main__":
     # thread.start_new_thread(data_extract, ())
     x = threading.Thread(target=data_extract, args=())
     x.start()
-    app.run()
+    app.run(debug=True)
