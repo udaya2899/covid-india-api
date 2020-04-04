@@ -10,7 +10,7 @@ import json
 import dateutil.parser as dparser
 from flask import Flask
 import re
-import thread
+import _thread
 import time
 from time import sleep
 from datetime import datetime
@@ -98,5 +98,5 @@ def get_data():
 
 
 if __name__ == "__main__":
-    thread.start_new_thread(data_extract, ())
+    _thread.start_new_thread(data_extract, ())
     app.run()
