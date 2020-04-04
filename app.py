@@ -5,12 +5,12 @@ This code scraps mohfw.gov.in for COVID-19 Data
 
 """
 import requests
+import threading
 from bs4 import BeautifulSoup
 import json
 import dateutil.parser as dparser
 from flask import Flask
 import re
-import _thread
 import time
 from time import sleep
 from datetime import datetime
@@ -82,7 +82,7 @@ def data_extract():
         state_wise_data = html_to_json(table, datetime.now())
         global last_extracted_content
         last_extracted_content = state_wise_data
-        print("content:",last_extracted_content)
+        # print("content:",last_extracted_content)
         time.sleep(3600)
 
 
@@ -95,20 +95,13 @@ def home():
 
 @app.route('/api', methods=['GET'])
 def get_data():
-    print("serial data:",last_extracted_content)
+    # print("serial data:",last_extracted_content)
     return last_extracted_content
-
-def print_time( threadName, delay):
-   count = 0
-   while count < 5:
-      time.sleep(delay)
-      count += 1
-      print ("%s: %s" % ( threadName, time.ctime(time.time()) ))
-
 
 
 
 if __name__ == "__main__":
-    _thread.start_new_thread(data_extract, ())
-    _thread.start_new_thread( print_time, ("Thread-1", 2, ) )
+    # thread.start_new_thread(data_extract, ())
+    x = threading.Thread(target=data_extract, args=())
+    x.start()
     app.run()
