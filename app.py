@@ -27,7 +27,8 @@ headers = {
 }
 # Added Date Time matching REGEX to give better input to Fuzze Dateutil Parser
 date_time_pattern = r"\d{2}.\d{2}.2020(.*)"
-
+global last_extracted_content
+last_extracted_content = "welcome"
 
 def get_table_from_web():
     url = "https://mohfw.gov.in"
@@ -75,13 +76,12 @@ def html_to_json(content, time, indent=None):
 
 
 def data_extract():
-    global last_extracted_content
-    last_extracted_content = "welcome"
     global last_extracted_time
     while(True):
         table, extracted_time = get_table_from_web()
         last_updated = dparser.parse(extracted_time, fuzzy=True)
         state_wise_data = html_to_json(table, datetime.now())
+        global last_extracted_content
         last_extracted_content = state_wise_data
         time.sleep(3600)
 
