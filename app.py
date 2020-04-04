@@ -98,7 +98,17 @@ def get_data():
     print("serial data:",last_extracted_content)
     return last_extracted_content
 
+def print_time( threadName, delay):
+   count = 0
+   while count < 5:
+      time.sleep(delay)
+      count += 1
+      print ("%s: %s" % ( threadName, time.ctime(time.time()) ))
+
+
+
 
 if __name__ == "__main__":
     _thread.start_new_thread(data_extract, ())
+    _thread.start_new_thread( print_time, ("Thread-1", 2, ) )
     app.run()
