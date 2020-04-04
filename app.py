@@ -19,6 +19,7 @@ app = Flask(__name__)
 
 
 
+
 # Removed Foreign National Column
 headers = {
     0: "id",
@@ -62,9 +63,8 @@ def html_to_json(content, time, indent=None):
             body = {}
             body["state_data"] = data
     
-    total = rows[len(rows)-1].find_all("strong")
+    total = rows[len(rows)-2].find_all("strong")
     total_items = {}
-
     for index in headers:
         if index != 0 and index != 1:
             total_items[headers[index]] = total[index-1].text
@@ -76,10 +76,10 @@ def html_to_json(content, time, indent=None):
     return json.dumps(response, indent=indent)
 
 def data_extract():
-    global last_extracted_content
     global last_extracted_time
+    global last_extracted_content
+    last_extracted_content = "welcome"
     while(True):
-        print("updated")
         table, extracted_time = get_table_from_web()
         last_updated = dparser.parse(extracted_time, fuzzy=True)
         state_wise_data = html_to_json(table, datetime.now())
