@@ -16,9 +16,8 @@ from time import sleep
 from datetime import datetime
 
 app = Flask(__name__)
-global last_extracted_content
-global last_extracted_time
-
+last_extracted_content = None
+last_extracted_time = None
 # Removed Foreign National Column
 headers = {
     0: "id",
@@ -77,6 +76,8 @@ def html_to_json(content, time, indent=None):
 
 
 def data_extract():
+    global last_extracted_content
+    global last_extracted_time
     while(True):
         print("updated")
         table, extracted_time = get_table_from_web()
