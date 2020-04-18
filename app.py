@@ -28,6 +28,7 @@ headers = {
 # Added Date Time matching REGEX to give better input to Fuzze Dateutil Parser
 date_time_pattern = r"\d{2}.\d{2}.2020(.*)"
 last_extracted_content = "welcome"
+last_extracted_time = "2020-03-28 17:45:00"
 
 def get_table_from_web():
     url = "https://mohfw.gov.in"
@@ -35,13 +36,13 @@ def get_table_from_web():
     soup = BeautifulSoup(page.content, 'html.parser')
     div = soup.find('div', class_='data-table')
     # time = div.find('strong').text
-    extracted_time = "2020-03-28 17:45:00"
+    #extracted_time = "2020-03-28 17:45:00"
     # print("time",time)
     # extracted_time = re.search(date_time_pattern, time)
     # extracted_time = extracted_time.group(0)
 
     table = div.find('table', class_='table')
-    return table, extracted_time
+    return table
 
 
 def html_to_json(content, time, indent=None):
@@ -60,9 +61,8 @@ def html_to_json(content, time, indent=None):
             body = {}
             body["state_data"] = data
 
-    total = rows[len(rows)-2].find_all("strong")
+    total = rows[len(rows)-3].find_all("strong")
     total_items = {}
-
     for index in headers:
         if index != 0 and index != 1:
             total_items[headers[index]] = total[index-1].text
@@ -75,14 +75,14 @@ def html_to_json(content, time, indent=None):
 
 
 def data_extract():
-    global last_extracted_time
+    global last_extracted_time 
     while(True):
-        table, extracted_time = get_table_from_web()
-        last_updated = dparser.parse(extracted_time, fuzzy=True)
+        table = get_table_from_web()
+        #last_updated = dparser.parse(extracted_time, fuzzy=True)
         state_wise_data = html_to_json(table, datetime.now())
         global last_extracted_content
         last_extracted_content = state_wise_data
-        print("content:",last_extracted_content)
+      # print("content:",last_extracted_content)
         time.sleep(3600)
 
 
@@ -95,13 +95,13 @@ def home():
 
 @app.route('/api', methods=['GET'])
 def get_data():
-    print("serial data:",last_extracted_content)
+    #print("serial data:",last_extracted_content)
     return last_extracted_content
 
 
 
 if __name__ == "__main__":
-    # thread.start_new_thread(data_extract, ())
+    #thread.start_new_thread(data_extract, ())
     x = threading.Thread(target=data_extract, args=())
     x.start()
     app.run(debug=True)
