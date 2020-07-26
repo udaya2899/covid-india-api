@@ -6,14 +6,14 @@
 
 ![Issues](https://img.shields.io/github/issues/udaya2899/covid-india-api) ![Forks](https://img.shields.io/github/forks/udaya2899/covid-india-api) ![Stars](https://img.shields.io/github/stars/udaya2899/covid-india-api) ![License](https://img.shields.io/github/license/udaya2899/covid-india-api)
 
-Coronavirus is shaking the world :earth_africa:. At such crucial times, the purity of data is to be maintained. Govt. of India hasn't released an official API yet. This API scraps data from Official Website of [Ministry of Health and Family Welfare](https://mohfw.gov.in) :heavy_check_mark: and exposes them as a **REST API** at [https://covid-india-api.herokuapp.com/api](https://covid-india-api.herokuapp.com/api)
+Coronavirus is shaking the world :earth_africa:. At such crucial times, the purity of data is to be maintained. Govt. of India hasn't released an official API yet. This API scraps data from Official Website of [Ministry of Health and Family Welfare](https://mohfw.gov.in) :heavy_check_mark: and exposes them as a **REST API** at [https://covid-india-api.herokuapp.com/v1/api](https://covid-india-api.herokuapp.com/v1/api)
 
 
 # Usage :computer:
 ### REST API Sample Usage
 cURL Command:
 
-    curl --request GET "https://covid-india-api.herokuapp.com/api"
+    curl --request GET "https://covid-india-api.herokuapp.com/v1/api"
 	
 ### To run the server locally on your machine:
 
@@ -46,7 +46,7 @@ Sample data from Ministry of Health and Family Welfare, Govt. of India [(link)](
 
 ## API - Sample JSON :rocket:
 
-Sample API Response obtained from [https://covid-india-api.herokuapp.com/api](https://covid-india-api.herokuapp.com/api)
+Sample API Response obtained from [https://covid-india-api.herokuapp.com/v1/api](https://covid-india-api.herokuapp.com/v1/api)
 
      {
       "data": {
