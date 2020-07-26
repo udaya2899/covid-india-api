@@ -11,6 +11,7 @@ import json
 from flask import Flask
 import re
 import time
+import sys
 from time import sleep
 from datetime import datetime
 from flask import request
@@ -106,4 +107,5 @@ if __name__ == "__main__":
     print("****** COVID-INDIA-API *******")
     x = threading.Thread(target=data_extract, args=())
     x.start()
+    sys.stdout.flush()
     app.run()
