@@ -42,7 +42,7 @@ Refer to `requirements.txt` for full list of requirements
 ## Data Source - Sample Table :white_check_mark:
 Sample data from Ministry of Health and Family Welfare, Govt. of India [(link)](https://mohfw.gov.in)
 
-![MOHFW Sample Data Table](https://imgur.com/a/hz2hLuq.png)
+![MOHFW Sample Data Table](https://imgur.com/1J30gT3.png)
 
 ## API - Sample JSON :rocket:
 
