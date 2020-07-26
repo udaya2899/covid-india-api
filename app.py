@@ -93,8 +93,7 @@ def home():
     return '''<h1>COVID 19 India Data</h1>
     <h3> API Version: v1 </h3>
     <h3>Source: <a href="https://mohfw.gov.in">Ministry of Health and Family Welfare, India</a></h3>
-    <h3><a href="https://covid-india-api.herokuapp.com/v1/api">Click here</a> to get data as JSON<h3>
-    <h4>Updates every 30 minutes from mohfw.gov.in</h4>'''
+    <h3><a href="https://covid-india-api.herokuapp.com/v1/api">Click here</a> to get data as JSON<h3>'''
 
 
 @app.route('/v1/api', methods=['GET'])
