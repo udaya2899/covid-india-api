@@ -75,11 +75,17 @@ def get_data(content, time, indent=None):
 
 
 def data_extract():
+    print("Thread triggered")
     while(True):
+        print("Fetching table from web ...\n")
         table = get_table_from_web()
+        print("Table fetched. \n Fetching state wise data from table...\n")
         state_wise_data = get_data(table, datetime.now())
+        print("Fetched state wise data.\n")
         global last_extracted_content
+        print("Setting last_extracted_content...\n")
         last_extracted_content = state_wise_data
+        print("last_extracted_content set, last_extracted_content:", last_extracted_content)
         time.sleep(1800)
 
 @app.route('/', methods=['GET'])
