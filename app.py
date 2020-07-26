@@ -5,16 +5,16 @@ This code scraps mohfw.gov.in for COVID-19 Data
 
 """
 import requests
-import threading
-from bs4 import BeautifulSoup
 import json
+
 from flask import Flask
-import re
-import time
-import sys
-from time import sleep
-from datetime import datetime
 from flask import request
+from flask import jsonify
+
+from bs4 import BeautifulSoup
+from datetime import datetime
+
+
 app = Flask(__name__)
 
 # Removed Foreign National Column
@@ -100,7 +100,7 @@ def home():
 @app.route('/v1/api', methods=['GET'])
 def api():
     response = data_extract()
-    return response
+    return jsonify(response)
 
 
 if __name__ == "__main__":
