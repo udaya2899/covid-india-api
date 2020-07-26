@@ -72,7 +72,7 @@ def get_data(content, time, indent=None):
         }
     }
     
-    return json.dumps(response, indent=4)
+    return json.dumps(response)
 
 
 def data_extract():
