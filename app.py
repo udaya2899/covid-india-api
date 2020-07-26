@@ -72,7 +72,7 @@ def get_data(content, time, indent=None):
         }
     }
     
-    return json.dumps(response)
+    return response
 
 
 def data_extract():
@@ -82,11 +82,7 @@ def data_extract():
     state_wise_data = get_data(table, datetime.now())
     print("Fetched state wise data.\n")
     
-    print("Setting last_extracted_content...\n")
-    last_extracted_content = state_wise_data
-    
-    print("last_extracted_content set, last_extracted_content:", last_extracted_content)
-    return last_extracted_content
+    return state_wise_data
 
 @app.route('/', methods=['GET'])
 def home():
