@@ -104,8 +104,7 @@ def api():
 
 
 if __name__ == "__main__":
-    print("****** COVID-INDIA-API *******")
+    print("****** COVID-INDIA-API *******", flush=True)
     x = threading.Thread(target=data_extract, args=())
     x.start()
-    sys.stdout.flush()
     app.run()
