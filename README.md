@@ -42,7 +42,7 @@ Refer to `requirements.txt` for full list of requirements
 ## Data Source - Sample Table :white_check_mark:
 Sample data from Ministry of Health and Family Welfare, Govt. of India [(link)](https://mohfw.gov.in)
 
-![MOHFW Sample Data Table](https://i.imgur.com/W4wNB1w.png)
+![MOHFW Sample Data Table](https://imgur.com/a/hz2hLuq.png)
 
 ## API - Sample JSON :rocket:
 
@@ -85,9 +85,9 @@ Sample API Response obtained from [https://covid-india-api.herokuapp.com/v1/api]
 	        "cured": "80", 
 	        "deaths": "19"
 	        }, 
-	     "last_updated": "2020-03-28 17:45:00"
-	     }
+	 "last_updated": "2020-03-28 17:45:00"
 	  }
+	}
     }
 
 ## Contribution :handshake:
