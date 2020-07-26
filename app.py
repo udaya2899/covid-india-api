@@ -26,8 +26,8 @@ headers = {
     4: "deaths",
     5: "total_confirmed"
 }
-# Added Date Time matching REGEX to give better input to Fuzze Dateutil Parser
-last_extracted_content = "Initial fetch... Please try after a minute"
+
+# last_extracted_content = "Initial fetch... Please try after a minute"
 
 def get_table_from_web():
     url = "http://mohfw.gov.in"
@@ -76,18 +76,17 @@ def get_data(content, time, indent=None):
 
 
 def data_extract():
-    print("Thread triggered")
-    while(True):
-        print("Fetching table from web ...\n")
-        table = get_table_from_web()
-        print("Table fetched. \n Fetching state wise data from table...\n")
-        state_wise_data = get_data(table, datetime.now())
-        print("Fetched state wise data.\n")
-        global last_extracted_content
-        print("Setting last_extracted_content...\n")
-        last_extracted_content = state_wise_data
-        print("last_extracted_content set, last_extracted_content:", last_extracted_content)
-        time.sleep(1800)
+    table = get_table_from_web()
+    print("Table fetched. \n Fetching state wise data from table...\n")
+    
+    state_wise_data = get_data(table, datetime.now())
+    print("Fetched state wise data.\n")
+    
+    print("Setting last_extracted_content...\n")
+    last_extracted_content = state_wise_data
+    
+    print("last_extracted_content set, last_extracted_content:", last_extracted_content)
+    return last_extracted_content
 
 @app.route('/', methods=['GET'])
 def home():
@@ -100,11 +99,10 @@ def home():
 
 @app.route('/v1/api', methods=['GET'])
 def api():
-    return last_extracted_content
+    response = data_extract()
+    return response
 
 
 if __name__ == "__main__":
     print("****** COVID-INDIA-API *******", flush=True)
-    x = threading.Thread(target=data_extract, args=())
-    x.start()
     app.run(debug=True)
