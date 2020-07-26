@@ -60,12 +60,8 @@ def get_data(content, time, indent=None):
     rows = content.find_all("tr")
     
     state_data = get_state_wise_data(rows[:len(rows)-6]) # consider all rows except the last 6
-    # body["state_data"] = state_data
     
     total_data = get_total_data(rows)
-    # body["total_data"] = total_data
-    
-    # body["last_updated"] = str(time)
     
     response = {
         "data": {
@@ -74,6 +70,7 @@ def get_data(content, time, indent=None):
             "last_updated": str(time)
         }
     }
+    
     return json.dumps(response, indent=4)
 
 
@@ -102,4 +99,4 @@ def api():
 if __name__ == "__main__":
     x = threading.Thread(target=data_extract, args=())
     x.start()
-    app.run(debug=True)
+    app.run()
