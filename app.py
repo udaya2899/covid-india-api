@@ -6,6 +6,8 @@ This code scraps mohfw.gov.in for COVID-19 Data
 """
 import requests
 import json
+import logging
+import threading
 
 from flask import Flask
 from flask import request
@@ -13,9 +15,6 @@ from flask import jsonify
 
 from bs4 import BeautifulSoup
 from datetime import datetime
-
-
-app = Flask(__name__)
 
 # Removed Foreign National Column
 headers = {
@@ -27,7 +26,11 @@ headers = {
     5: "total_confirmed"
 }
 
-# last_extracted_content = "Initial fetch... Please try after a minute"
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+app = Flask(__name__)
+
+last_extracted_content = {"data": "fetching.. please try again in a minute"}
 
 def get_table_from_web():
     url = "http://mohfw.gov.in"
@@ -38,7 +41,7 @@ def get_table_from_web():
     return table
 
 def get_state_wise_data(rows):
-    rows = rows[:34]
+    rows = rows[:36]
     state_data = []
     for row in rows:
         cells = row.find_all("td")
@@ -51,7 +54,7 @@ def get_state_wise_data(rows):
     return state_data
 
 def get_total_data(rows):
-    total = rows[35].find_all("strong")
+    total = rows[36].find_all("strong")
     total_data = {}
     for index in headers:
         if index != 0 and index != 1:
@@ -78,12 +81,13 @@ def get_data(content, time, indent=None):
 
 def data_extract():
     table = get_table_from_web()
-    print("Table fetched. \n Fetching state wise data from table...\n")
+    logging.info("Table fetched. \n Fetching state wise data from table...\n")
     
     state_wise_data = get_data(table, datetime.now())
-    print("Fetched state wise data.\n")
+    logging.info("Fetched state wise data.\n")
     
-    return state_wise_data
+    global last_extracted_content
+    last_extracted_content = state_wise_data
 
 @app.route('/', methods=['GET'])
 def home():
@@ -96,10 +100,12 @@ def home():
 
 @app.route('/v1/api', methods=['GET'])
 def api():
-    response = data_extract()
-    return jsonify(response)
+    global last_extracted_content
+    logging.info("Request received, response: %s", last_extracted_content)
+    return jsonify(last_extracted_content)
 
 
 if __name__ == "__main__":
-    print("****** COVID-INDIA-API *******", flush=True)
+    logging.info("****** COVID-INDIA-API *******")
+    threading.Timer(10, data_extract, ()).start()
     app.run(debug=True)
