@@ -104,8 +104,9 @@ def api():
     logging.info("Request received, response: %s", last_extracted_content)
     return jsonify(last_extracted_content)
 
+def start_thread():
+    threading.Timer(10, data_extract, ()).start()
 
 if __name__ == "__main__":
     logging.info("****** COVID-INDIA-API *******")
-    threading.Timer(10, data_extract, ()).start()
     app.run(debug=True)
