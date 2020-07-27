@@ -10,7 +10,6 @@ import logging
 import threading
 
 from flask import Flask
-from flask import request
 from flask import jsonify
 
 from bs4 import BeautifulSoup
@@ -26,12 +25,18 @@ headers = {
     5: "total_confirmed"
 }
 
+# Initialisations
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 
+# config
+FETCH_INTERVAL = 1800
+
+# global response variable, to be overwritten later
 last_extracted_content = {"data": "fetching.. please try again in a minute"}
 
+# scrapes table from the given url
 def get_table_from_web():
     url = "http://mohfw.gov.in"
     page = requests.get(url)
@@ -40,6 +45,8 @@ def get_table_from_web():
     table = div.find('table', class_='table')
     return table
 
+# When provided with rows of a table, returns state_data, after cleaning
+# Assumed that state data will be for first 35 rows in body of table
 def get_state_wise_data(rows):
     rows = rows[:36]
     state_data = []
@@ -53,6 +60,7 @@ def get_state_wise_data(rows):
             state_data.append(items)
     return state_data
 
+# When provided with rows of a table, returns total_data, assuming that 36th row is total_data
 def get_total_data(rows):
     total = rows[36].find_all("strong")
     total_data = {}
@@ -61,6 +69,7 @@ def get_total_data(rows):
             total_data[headers[index]] = total[index-1].text
     return total_data
 
+# get_data combines all the information given extracted table content
 def get_data(content, time, indent=None):
     rows = content.find_all("tr")
     
@@ -78,7 +87,7 @@ def get_data(content, time, indent=None):
     
     return response
 
-
+# parent function that calls the scraping function and get_data function
 def data_extract():
     table = get_table_from_web()
     logging.info("Table fetched. \n Fetching state wise data from table...\n")
@@ -105,7 +114,7 @@ def api():
     return jsonify(last_extracted_content)
 
 def start_thread():
-    threading.Timer(10, data_extract, ()).start()
+    threading.Timer(FETCH_INTERVAL, data_extract, ()).start()
 
 if __name__ == "__main__":
     logging.info("****** COVID-INDIA-API *******")
