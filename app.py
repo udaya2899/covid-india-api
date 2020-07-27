@@ -38,6 +38,7 @@ def get_table_from_web():
     return table
 
 def get_state_wise_data(rows):
+    rows = rows[:34]
     state_data = []
     for row in rows:
         cells = row.find_all("td")
@@ -50,7 +51,7 @@ def get_state_wise_data(rows):
     return state_data
 
 def get_total_data(rows):
-    total = rows[-6].find_all("strong")
+    total = rows[35].find_all("strong")
     total_data = {}
     for index in headers:
         if index != 0 and index != 1:
@@ -60,7 +61,7 @@ def get_total_data(rows):
 def get_data(content, time, indent=None):
     rows = content.find_all("tr")
     
-    state_data = get_state_wise_data(rows[:len(rows)-6]) # consider all rows except the last 6
+    state_data = get_state_wise_data(rows) # consider all rows except the last 6
     
     total_data = get_total_data(rows)
     
