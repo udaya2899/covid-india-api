@@ -8,6 +8,9 @@
 
 Coronavirus is shaking the world :earth_africa:. At such crucial times, the purity of data is to be maintained. Govt. of India hasn't released an official API yet. This API scraps data from Official Website of [Ministry of Health and Family Welfare](https://mohfw.gov.in) :heavy_check_mark: and exposes them as a **REST API** at [https://covid-india-api.herokuapp.com/v1/api](https://covid-india-api.herokuapp.com/v1/api)
 
+# Featured in POSTMAN COVID-19 API Resource Center
+URL: https://covid-19-apis.postman.com/
+![POSTMAN COVID-19 API Resource Center](https://imgur.com/1ZwLahM.png)
 
 # Usage :computer:
 ### REST API Sample Usage
