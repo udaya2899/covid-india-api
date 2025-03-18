@@ -1,3 +1,5 @@
+# Not relevant anymore, archived
+---
 
 # Covid India API
 > REST API to track Coronavirus cases in India on state level
